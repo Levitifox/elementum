@@ -1,0 +1,148 @@
+:root {
+    --background-color: #2d2d2d;
+    --secondary-bg-color: #1e1e1e;
+    --foreground-color: #eeeeee;
+    --accent-color: #a9d1ff;
+    --border-color: #444;
+    --hover-color: #666;
+    --highlight-color: #ffcc99;
+
+    --font-family: "Fira Code", monospace;
+    --font-size-base: 14px;
+    --padding: 6px;
+    --border-radius: 6px;
+
+    --scrollbar-width: 6px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--foreground-color);
+    font-family: var(--font-family);
+    height: 100%;
+}
+
+html, body, #root {
+    height: 99%;
+}
+
+.editor {
+    display: flex;
+    gap: var(--padding);
+    padding: var(--padding);
+    height: 100%;
+}
+
+.editor-input,
+.editor-preview {
+    flex: 1;
+    padding: var(--padding);
+    background-color: var(--secondary-bg-color);
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-base);
+    line-height: 1.5;
+    outline: none;
+    resize: none;
+    height: 100%;
+    overflow-y: auto;
+    color: var(--foreground-color);
+}
+
+.editor-input::-webkit-scrollbar,
+.editor-preview::-webkit-scrollbar {
+    width: var(--scrollbar-width);
+    height: var(--scrollbar-width);
+}
+
+.editor-input::-webkit-scrollbar-thumb,
+.editor-preview::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: var(--border-radius);
+}
+
+.editor-input::-webkit-scrollbar-thumb:hover,
+.editor-preview::-webkit-scrollbar-thumb:hover {
+    background-color: var(--hover-color);
+}
+
+.editor-input,
+.editor-preview {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+}
+
+a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+code,
+pre {
+    background-color: var(--secondary-bg-color);
+    border-radius: var(--border-radius);
+    padding: 2px 4px;
+    color: var(--highlight-color);
+}
+
+pre {
+    padding: var(--padding-base);
+    color: var(--foreground-color);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1em 0;
+    background-color: var(--secondary-bg-color);
+}
+
+th, td {
+    border: 1px solid var(--border-color);
+    padding: var(--padding);
+    text-align: left;
+}
+
+th {
+    background-color: var(--background-color);
+    color: var(--foreground-color);
+}
+
+tr:nth-child(even) {
+    background-color: var(--secondary-bg-color);
+}
+
+ul, ol {
+    margin: var(--padding) 0;
+    padding-left: calc(var(--padding) * 4);
+}
+
+li {
+    margin: calc(var(--padding) / 2) 0;
+}
+
+blockquote {
+    margin: calc(var(--padding) * 2) 0;
+    padding-left: var(--padding);
+    border-left: 4px solid var(--accent-color);
+    color: #b0b0b0;
+    border-radius: 4px;
+}
+
+hr {
+    border: none;
+    height: 1px;
+    background-color: var(--border-color);
+    margin: calc(var(--padding) * 2) 0;
+}
+
+input[type="checkbox"] {
+    accent-color: var(--border-color);
+    width: 14px;
+    height: 14px;
+}
