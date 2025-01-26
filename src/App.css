@@ -1,3 +1,8 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
 :root {
     --background-color: #2d2d2d;
     --secondary-bg-color: #1e1e1e;
@@ -16,21 +21,15 @@
 }
 
 body {
-    margin: 0;
-    padding: 0;
     background-color: var(--background-color);
     color: var(--foreground-color);
     font-family: var(--font-family);
-    height: 100%;
 }
 
 html,
 body,
 #root {
-    margin: 0;
-    padding: 0;
     height: 100%;
-    overflow: hidden;
 }
 
 .editor {
@@ -38,12 +37,12 @@ body,
     gap: var(--padding);
     padding: var(--padding);
     height: 100%;
+    box-sizing: border-box;
 }
 
 .editor-input,
 .editor-preview {
     flex: 1;
-    padding: var(--padding);
     background-color: var(--secondary-bg-color);
     border: none;
     border-radius: var(--border-radius);
@@ -54,6 +53,9 @@ body,
     height: 100%;
     overflow-y: auto;
     color: var(--foreground-color);
+    position: relative;
+    padding: var(--padding);
+    box-sizing: border-box;
 }
 
 .editor-input::-webkit-scrollbar,
