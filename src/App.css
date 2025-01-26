@@ -24,8 +24,10 @@ body {
     height: 100%;
 }
 
-html, body, #root {
-    height: 99%;
+html,
+body,
+#root {
+    height: 100%;
 }
 
 .editor {
@@ -102,7 +104,8 @@ table {
     background-color: var(--secondary-bg-color);
 }
 
-th, td {
+th,
+td {
     border: 1px solid var(--border-color);
     padding: var(--padding);
     text-align: left;
@@ -117,7 +120,8 @@ tr:nth-child(even) {
     background-color: var(--secondary-bg-color);
 }
 
-ul, ol {
+ul,
+ol {
     margin: var(--padding) 0;
     padding-left: calc(var(--padding) * 4);
 }

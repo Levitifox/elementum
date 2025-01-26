@@ -52,15 +52,19 @@ npm run serve
 ## Project Structure
 
 ```
+.gitignore
+.prettierrc.json
 index.html
+main.js
 package.json
+postcss.config.js
 preload.js
+README.md
 src/
     App.css
     App.jsx
     index.css
     main.jsx
 tailwind.config.js
-.prettierrc.json
-README.md
+vite.config.js
 ```

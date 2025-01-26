@@ -27,7 +27,7 @@ class ErrorBoundary extends Component {
             return <h1>Something went wrong.</h1>;
         }
 
-        return this.props.children; 
+        return this.props.children;
     }
 }
 
@@ -41,12 +41,7 @@ const MarkdownPreview = ({ content }) => {
                 code({ node, inline, className, children, ...props }) {
                     const match = /language-(\w+)/.exec(className || "");
                     return !inline && match ? (
-                        <SyntaxHighlighter
-                            style={materialDark}
-                            language={match[1]}
-                            PreTag="div"
-                            {...props}
-                        >
+                        <SyntaxHighlighter style={materialDark} language={match[1]} PreTag="div" {...props}>
                             {String(children).replace(/\n$/, "")}
                         </SyntaxHighlighter>
                     ) : (
@@ -69,12 +64,7 @@ const MarkdownEditor = () => {
     return (
         <ErrorBoundary>
             <div className="editor">
-                <textarea 
-                    className="editor-input" 
-                    value={text} 
-                    onChange={e => setText(e.target.value)} 
-                    placeholder="Write your Markdown here..." 
-                />
+                <textarea className="editor-input" value={text} onChange={e => setText(e.target.value)} placeholder="Write your Markdown here..." />
                 <div className="editor-preview">
                     <MarkdownPreview content={text} />
                 </div>
