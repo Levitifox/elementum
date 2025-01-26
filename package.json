@@ -14,7 +14,7 @@
     "license": "ISC",
     "dependencies": {
         "highlight.js": "^11.11.1",
-        "katex": "^0.16.0",
+        "katex": "^0.16.21",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-markdown": "^9.0.3",
@@ -22,7 +22,7 @@
         "rehype-highlight": "^7.0.1",
         "rehype-katex": "^6.0.3",
         "remark-gfm": "^4.0.0",
-        "remark-math": "^5.1.1"
+        "remark-math": "^6.0.0"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.0",
