@@ -41,7 +41,12 @@ const MarkdownPreview = ({ content }) => {
                 code({ node, inline, className, children, ...props }) {
                     const match = /language-(\w+)/.exec(className || "");
                     return !inline && match ? (
-                        <SyntaxHighlighter style={materialDark} language={match[1]} PreTag="div" {...props}>
+                        <SyntaxHighlighter
+                            style={materialDark}
+                            language={match[1]}
+                            PreTag="div"
+                            {...props}
+                        >
                             {String(children).replace(/\n$/, "")}
                         </SyntaxHighlighter>
                     ) : (
@@ -59,15 +64,80 @@ const MarkdownPreview = ({ content }) => {
 };
 
 const MarkdownEditor = () => {
-    const [text, setText] = useState("");
+    const [tabs, setTabs] = useState([{ id: 1, text: "" }]);
+    const [activeTabId, setActiveTabId] = useState(1);
+
+    const addTab = () => {
+        const newTabId = tabs.length + 1;
+        setTabs([...tabs, { id: newTabId, text: "" }]);
+        setActiveTabId(newTabId);
+    };
+
+    const removeTab = (id) => {
+        const updatedTabs = tabs.filter((tab) => tab.id !== id);
+        setTabs(updatedTabs);
+        if (activeTabId === id && updatedTabs.length > 0) {
+            setActiveTabId(updatedTabs[0].id);
+        } else if (updatedTabs.length === 0) {
+            setActiveTabId(null);
+        }
+    };
+
+    const updateText = (id, newText) => {
+        setTabs(
+            tabs.map((tab) =>
+                tab.id === id ? { ...tab, text: newText } : tab
+            )
+        );
+    };
+
+    const activeTab = tabs.find((tab) => tab.id === activeTabId);
 
     return (
         <ErrorBoundary>
-            <div className="editor">
-                <textarea className="editor-input" value={text} onChange={e => setText(e.target.value)} placeholder="Write your Markdown here..." />
-                <div className="editor-preview">
-                    <MarkdownPreview content={text} />
+            <div className="editor-container">
+                <div className="tab-headers">
+                    {tabs.map((tab) => (
+                        <div
+                            key={tab.id}
+                            className={`tab-header ${
+                                tab.id === activeTabId ? "active" : ""
+                            }`}
+                            onClick={() => setActiveTabId(tab.id)}
+                        >
+                            {tab.text.trim().substring(0, 10) || "Untitled   "}
+                            {tab.text.length > 10 && "…"}
+                            <button
+                                className="close-tab-button"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    removeTab(tab.id);
+                                }}
+                            >
+                                ×
+                            </button>
+                        </div>
+                    ))}
+                    <button className="add-tab-button" onClick={addTab}>
+                        +
+                    </button>
                 </div>
+
+                {activeTab && (
+                    <div className="tab-content">
+                        <textarea
+                            className="editor-input"
+                            value={activeTab.text}
+                            onChange={(e) =>
+                                updateText(activeTab.id, e.target.value)
+                            }
+                            placeholder="Write your Markdown here..."
+                        />
+                        <div className="editor-preview">
+                            <MarkdownPreview content={activeTab.text} />
+                        </div>
+                    </div>
+                )}
             </div>
         </ErrorBoundary>
     );

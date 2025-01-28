@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, Menu } = require("electron");
 const path = require("path");
 
 let mainWindow;
@@ -15,6 +15,8 @@ function createWindow() {
     });
 
     mainWindow.loadURL("http://localhost:3000");
+
+    Menu.setApplicationMenu(null);
 
     if (process.env.NODE_ENV === "development") {
         mainWindow.webContents.openDevTools();

@@ -32,12 +32,106 @@ body,
     height: 100%;
 }
 
-.editor {
+.editor-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.tab-headers {
+    display: flex;
+    align-items: center;
+    background-color: var(--secondary-bg-color);
+    padding: var(--padding);
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+}
+
+.tab-headers::-webkit-scrollbar {
+    height: var(--scrollbar-width);
+}
+
+.tab-headers::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: var(--border-radius);
+}
+
+.tab-header {
+    padding: var(--padding);
+    margin-right: var(--padding);
+    background-color: var(--secondary-bg-color);
+    color: var(--hover-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    max-width: 150px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+
+    > *:not(:last-child) {
+        margin-right: 16px;
+    }
+}
+
+.tab-header:hover {
+    background-color: var(--background-color);
+}
+
+.tab-header.active {
+    background-color: var(--background-color);
+    color: var(--foreground-color);
+    font-weight: bold;
+    border-color: var(--border-color);
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+}
+
+.add-tab-button {
+    background-color: var(--secondary-bg-color);
+    color: var(--hover-color);
+    border: 1px solid var(--border-color);
+    padding: var(--padding);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.add-tab-button:hover {
+    background-color: var(--background-color);
+    color: var(--foreground-color);
+}
+
+.close-tab-button {
+    background: transparent;
+    border: none;
+    color: var(--hover-color);
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    position: relative;
+    transform: scale(1.2);
+    transform-origin: center;
+    z-index: 1;
+    padding-right: 2px;
+}
+
+
+.close-tab-button:hover {
+    color: var(--foreground-color);
+}
+
+.tab-content {
     display: flex;
     gap: var(--padding);
     padding: var(--padding);
-    height: 100%;
+    flex: 1;
     box-sizing: border-box;
+    overflow: auto;
 }
 
 .editor-input,
@@ -85,6 +179,7 @@ a {
     color: var(--accent-color);
     text-decoration: none;
 }
+
 a:hover {
     text-decoration: underline;
 }
