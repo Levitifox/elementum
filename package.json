@@ -45,11 +45,16 @@
         },
         "files": [
             "dist/**/*",
-            "node_modules/**/*",
-            "electron/**/*",
+            "assets/**/*",
+            "src/**/*",
             "main.js",
             "preload.js",
-            "index.html"
+            "index.html",
+            "postcss.config.js",
+            "tailwind.config.js",
+            "vite.config.js",
+            "package.json",
+            "!node_modules"
         ],
         "win": {
             "target": "nsis",
