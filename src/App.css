@@ -5,7 +5,7 @@
 
 :root {
     --background-color: #2d2d2d;
-    --secondary-bg-color: #1e1e1e;
+    --secondary-bg-color: #202020;
     --foreground-color: #eeeeee;
     --accent-color: #a9d1ff;
     --border-color: #444;
@@ -45,6 +45,9 @@ body,
     padding: var(--padding);
     scrollbar-width: thin;
     scrollbar-color: var(--border-color) transparent;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    margin: 0 var(--padding);
+    overflow: overlay;
 }
 
 .tab-headers::-webkit-scrollbar {
@@ -250,3 +253,5 @@ input[type="checkbox"] {
     width: 14px;
     height: 14px;
 }
+
+

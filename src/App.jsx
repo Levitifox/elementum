@@ -64,8 +64,39 @@ const MarkdownPreview = ({ content }) => {
 };
 
 const MarkdownEditor = () => {
+    const placeholderPhrases = [
+        "Every great idea starts with a blank page.",
+        "Write your way into history.",
+        "Dream it. Note it. Build it.",
+        "Big things have small beginnings.",
+        "Thoughts become plans, plans become actions.",
+        "Scribble, doodle, conquer!",
+        "The page is yours. Go wild.",
+        "What secrets will you spill here?",
+        "Your imagination called—it needs more space.",
+        "This is your brain's playground.",
+        "You could write anything here. No pressure.",
+        "This blank space is judging your indecision.",
+        "One day, this might be a best-seller.",
+        "Markdown your mark on the world!",
+        "A masterpiece in progress (hopefully).",
+        "There’s 10 types of people in the world: those who write notes, and those who don’t.",
+        "Insert genius idea here.",
+        "Ctrl+Z is your safety net. Use it wisely.",
+        "The matrix of your ideas starts here.",
+        "Stay calm and Markdown on.",
+        "Let your thoughts flow freely.",
+        "Your next big idea starts here.",
+        "Turn your brainwaves into pagewaves.",
+        "Every word matters. Start now.",
+        "Write something amazing today."
+    ];
+
     const [tabs, setTabs] = useState([{ id: 1, text: "" }]);
     const [activeTabId, setActiveTabId] = useState(1);
+
+    const getRandomPlaceholder = () =>
+        placeholderPhrases[Math.floor(Math.random() * placeholderPhrases.length)];
 
     const addTab = () => {
         const newTabId = tabs.length + 1;
@@ -131,7 +162,7 @@ const MarkdownEditor = () => {
                             onChange={(e) =>
                                 updateText(activeTab.id, e.target.value)
                             }
-                            placeholder="Write your Markdown here..."
+                            placeholder={getRandomPlaceholder()}
                         />
                         <div className="editor-preview">
                             <MarkdownPreview content={activeTab.text} />
