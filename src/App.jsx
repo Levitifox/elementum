@@ -1,4 +1,4 @@
-import React, { useState, Component } from "react";
+import React, { useState, useEffect, Component, useCallback } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import "katex/dist/katex.min.css";
@@ -8,13 +8,15 @@ import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 
+const { ipcRenderer } = window.require ? window.require("electron") : { ipcRenderer: null };
+
 class ErrorBoundary extends Component {
     constructor(props) {
         super(props);
         this.state = { hasError: false };
     }
 
-    static getDerivedStateFromError(error) {
+    static getDerivedStateFromError() {
         return { hasError: true };
     }
 
@@ -92,34 +94,65 @@ const MarkdownEditor = () => {
         "Write something amazing today."
     ];
 
-    const [tabs, setTabs] = useState([{ id: 1, text: "" }]);
-    const [activeTabId, setActiveTabId] = useState(1);
+    const [tabs, setTabs] = useState([]);
+    const [activeTabId, setActiveTabId] = useState(null);
+
+    useEffect(() => {
+        ipcRenderer.invoke("load-notes").then((loadedNotes) => {
+            if (loadedNotes.length > 0) {
+                setTabs(loadedNotes);
+                setActiveTabId(loadedNotes[0].id);
+            } else {
+                addTab();
+            }
+        });
+    }, []);
 
     const getRandomPlaceholder = () =>
         placeholderPhrases[Math.floor(Math.random() * placeholderPhrases.length)];
 
     const addTab = () => {
-        const newTabId = tabs.length + 1;
-        setTabs([...tabs, { id: newTabId, text: "" }]);
-        setActiveTabId(newTabId);
+        const newTab = { id: Date.now().toString(), text: "" };
+        setTabs((prevTabs) => [...prevTabs, newTab]);
+        setActiveTabId(newTab.id);
+        ipcRenderer.send("save-note", newTab);
     };
 
     const removeTab = (id) => {
-        const updatedTabs = tabs.filter((tab) => tab.id !== id);
-        setTabs(updatedTabs);
-        if (activeTabId === id && updatedTabs.length > 0) {
-            setActiveTabId(updatedTabs[0].id);
-        } else if (updatedTabs.length === 0) {
-            setActiveTabId(null);
-        }
+        ipcRenderer.send("delete-note", id);
+        setTabs((prevTabs) => {
+            const updatedTabs = prevTabs.filter((tab) => tab.id !== id);
+            if (updatedTabs.length === 0) {
+                addTab();
+                return [];
+            }
+            if (activeTabId === id) {
+                setActiveTabId(updatedTabs[0].id);
+            }
+            return updatedTabs;
+        });
     };
 
+    const debounce = (fn, delay = 500) => {
+        let timer;
+        return (...args) => {
+            clearTimeout(timer);
+            timer = setTimeout(() => fn(...args), delay);
+        };
+    };
+
+    const saveNote = useCallback(
+        debounce((id, text) => {
+            ipcRenderer.send("save-note", { id, text });
+        }),
+        []
+    );
+
     const updateText = (id, newText) => {
-        setTabs(
-            tabs.map((tab) =>
-                tab.id === id ? { ...tab, text: newText } : tab
-            )
+        setTabs((prevTabs) =>
+            prevTabs.map((tab) => (tab.id === id ? { ...tab, text: newText } : tab))
         );
+        saveNote(id, newText);
     };
 
     const activeTab = tabs.find((tab) => tab.id === activeTabId);
