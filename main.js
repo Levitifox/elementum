@@ -4,7 +4,9 @@ const fs = require("fs");
 const os = require("os");
 
 let mainWindow;
-const notesDir = path.join(os.homedir(), "Documents", "MarkdownNotes");
+const notesDir = app.isPackaged
+    ? path.join(app.getPath("documents"), "MarkdownNotes")
+    : path.join(os.homedir(), "Documents", "MarkdownNotes");
 
 if (!fs.existsSync(notesDir)) {
     fs.mkdirSync(notesDir, { recursive: true });
@@ -15,7 +17,7 @@ function createWindow() {
         width: 1200,
         height: 700,
         webPreferences: {
-            preload: path.join(__dirname, "preload.js"),
+            preload: path.join(app.getAppPath(), "preload.js"),
             nodeIntegration: true,
             contextIsolation: false,
         },
@@ -33,17 +35,31 @@ function createWindow() {
     });
 }
 
-ipcMain.handle("load-notes", () => {
-    const files = fs.readdirSync(notesDir);
-    return files.map((file) => ({
-        id: file.replace(".md", ""),
-        text: fs.readFileSync(path.join(notesDir, file), "utf8"),
-    }));
+app.on("ready", createWindow);
+
+app.on("window-all-closed", () => {
+    if (process.platform !== "darwin") {
+        app.quit();
+    }
 });
 
-ipcMain.on("save-note", (event, { id, text }) => {
+app.on("activate", () => {
+    if (mainWindow === null) {
+        createWindow();
+    }
+});
+
+ipcMain.handle("load-notes", async () => {
+    const files = await fs.promises.readdir(notesDir);
+    return Promise.all(files.map(async (file) => ({
+        id: file.replace(".md", ""),
+        text: await fs.promises.readFile(path.join(notesDir, file), "utf8"),
+    })));
+});
+
+ipcMain.on("save-note", async (event, { id, text }) => {
     const filePath = path.join(notesDir, `${id}.md`);
-    fs.writeFileSync(filePath, text, "utf8");
+    await fs.promises.writeFile(filePath, text, "utf8");
 });
 
 ipcMain.on("delete-note", (event, id) => {
@@ -51,14 +67,4 @@ ipcMain.on("delete-note", (event, id) => {
     if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
     }
-});
-
-app.whenReady().then(createWindow);
-
-app.on("window-all-closed", () => {
-    if (process.platform !== "darwin") app.quit();
-});
-
-app.on("activate", () => {
-    if (mainWindow === null) createWindow();
 });

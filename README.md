@@ -9,6 +9,8 @@ Elementum is a simple Markdown editor built with React. It supports GitHub Flavo
 - **Mathematical Expressions**: Supports LaTeX-style math using KaTeX.
 - **GitHub Flavored Markdown**: Supports GFM features like tables, task lists, and strikethrough.
 
+![Screenshot](assets/Elementum.png)
+
 ## Installation
 
 1. Clone the repository:

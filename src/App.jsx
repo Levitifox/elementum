@@ -169,7 +169,7 @@ const MarkdownEditor = () => {
                             }`}
                             onClick={() => setActiveTabId(tab.id)}
                         >
-                            {tab.text.trim().substring(0, 10) || "Untitled   "}
+                            {tab.text.trim().substring(0, 10) || "Untitled"}
                             {tab.text.length > 10 && "…"}
                             <button
                                 className="close-tab-button"
